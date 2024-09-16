@@ -1,0 +1,77 @@
+.food-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.food-card {
+  width: 250px;
+  height: 350px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.food-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.food-card:hover .food-card-inner {
+  transform: rotateY(180deg);
+}
+
+.food-card-front, .food-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-card-front {
+  background-color: #fff;
+}
+
+.food-card-back {
+  background-color: #f0f0f0;
+  transform: rotateY(180deg);
+}
+
+.food-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.create-meal-btn {
+  margin-top: 30px;
+  padding: 15px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-meal-btn:hover {
+  background-color: #45a049;
+}
+
+.selected {
+  border: 2px solid #4CAF50; /* Resalta la tarjeta seleccionada */
+  background-color: #d3ffd3; /* Cambia el color de fondo cuando esté seleccionada */
+}

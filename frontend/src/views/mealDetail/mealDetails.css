@@ -1,0 +1,23 @@
+.meal-details-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .nutrition-details {
+    margin-top: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 8px;
+  }
+  
+  .nutrition-details h3 {
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  .nutrition-details p {
+    margin: 5px 0;
+    color: #555;
+  }
+  

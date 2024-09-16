@@ -1,0 +1,67 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Previene la recarga de la página al enviar el formulario
+
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Almacenar el token JWT en localStorage
+        navigate('/home'); // Redirigir al usuario a la página de inicio
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Login failed'); // Ajustar mensaje de error
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An unexpected error occurred');
+    }
+  };
+
+  return (
+    <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit">Login</button>
+        <p>
+          Don't have an account? <a href="/register">Register</a>
+        </p>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
