@@ -1,3 +1,5 @@
+// src/components/NavBar/Navbar.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css'; // Asegúrate de crear este archivo
@@ -7,7 +9,6 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate(); // Cambiado useHistory por useNavigate
 
-  // Verificar si el usuario está autenticado
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
