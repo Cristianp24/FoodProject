@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET;
 const  getUserMeals  = require('../backend/Foods/getUserMeals');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 
 
@@ -126,55 +126,59 @@ const authenticateToken = (req, res, next) => {
 // Ruta para registro de usuarios
 app.post('/register', async (req, res) => {
   try {
-      const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-      // Verifica que el nombre, el email y la contraseña no estén vacíos
-      if (!name || !email || !password) {
-          return res.status(400).json({ message: 'Name, email, and password are required.' });
-      }
+    // Verificación de campos vacíos
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required.' });
+    }
 
-      // Verifica si el email ya está registrado
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
-          return res.status(400).json({ message: 'Email is already in use.' });
-      }
+    // Verificar si el email ya está registrado
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email is already in use.' });
+    }
 
-      // Hashea la contraseña antes de guardarla
-      const hashedPassword = await bcrypt.hash(password, 10);
+    // Crear el nuevo usuario (el hash de la contraseña se manejará en el modelo)
+    const newUser = await User.create({ name, email, password });
 
-      // Crea el nuevo usuario con el nombre, email y contraseña hasheada
-      const newUser = await User.create({ name, email, password: hashedPassword });
-
-      res.status(201).json({ message: 'User registered successfully!', user: newUser });
+    res.status(201).json({ message: 'User registered successfully!', user: newUser });
   } catch (error) {
-      res.status(500).json({ message: 'Error registering user', error: error.message });
+    res.status(500).json({ message: 'Error registering user', error: error.message });
   }
 });
 
 
-
-
 // Ruta para iniciar sesión
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.findOne({ where: { email } });
-      console.log(user);
-      
-      if (!user || !(await user.validPassword(password))) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-  
-      const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, {
-        expiresIn: '1h', // Token expiration time
-      });
-  
-      res.json({ token });
-    } catch (error) {
-      res.status(500).json({ message: 'Internal server error' });
+
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+
     }
-  });
+
+    const isValidPassword = await user.validPassword(password);
+
+    if (!isValidPassword) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, {
+      expiresIn: '1h', // Tiempo de expiración del token
+    });
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 // Ruta protegida (solo accesible si el usuario está autenticado)
 app.get('/protected', (req, res) => {
     if (req.isAuthenticated()) {

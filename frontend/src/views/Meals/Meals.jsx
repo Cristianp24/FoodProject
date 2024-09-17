@@ -85,6 +85,22 @@ const CreateMeal = () => {
     }
   };
 
+  const handleClearAll = () => {
+    setSelectedFoods([]);
+    setQuantities({});
+    localStorage.removeItem('selectedFoods');
+  };
+
+  const handleRemoveFood = (foodId) => {
+    const updatedFoods = selectedFoods.filter(food => food.id !== foodId);
+    setSelectedFoods(updatedFoods);
+    setQuantities(prevQuantities => {
+      const { [foodId]: _, ...rest } = prevQuantities;
+      return rest;
+    });
+    localStorage.setItem('selectedFoods', JSON.stringify(updatedFoods));
+  };
+
   return (
     <div className="container">
       {selectedFoods.length === 0 ? (
@@ -103,6 +119,9 @@ const CreateMeal = () => {
                 min="0"
               />
               <span>Grams</span>
+              <button className="remove-food-btn" onClick={() => handleRemoveFood(food.id)}>
+                &times;
+              </button>
             </div>
           ))}
         </div>
@@ -125,6 +144,9 @@ const CreateMeal = () => {
       </div>
       <button className="save-meal-btn" onClick={handleSaveMeal}>
         Save Meal
+      </button>
+      <button className="clear-all-btn" onClick={handleClearAll}>
+        Clear All
       </button>
     </div>
   );
