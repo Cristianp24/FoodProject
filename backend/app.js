@@ -160,6 +160,8 @@ app.post('/login', async (req, res) => {
   
     try {
       const user = await User.findOne({ where: { email } });
+      console.log(user);
+      
       if (!user || !(await user.validPassword(password))) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
