@@ -1,4 +1,5 @@
 // models/food.js
+const { DataTypes } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const Food = sequelize.define('Food', {
     name: {
