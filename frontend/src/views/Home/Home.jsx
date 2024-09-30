@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const response = await fetch('http://localhost:3000/food');
+        const response = await fetch('http://localhost:3000/foods');
         const data = await response.json();
         setFoods(data);
       } catch (error) {

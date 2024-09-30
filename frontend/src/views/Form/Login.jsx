@@ -12,7 +12,7 @@ const Login = () => {
     event.preventDefault(); // Previene la recarga de la página al enviar el formulario
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch('http://localhost:3000/users/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -31,6 +31,11 @@ const Login = () => {
       setError('An unexpected error occurred');
     }
   };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:3000/users/auth/google/callback'; // Redirigir a la ruta de autenticación con Google
+  };
+
 
   return (
     <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
@@ -54,6 +59,22 @@ const Login = () => {
             required
           />
         </div>
+        <div style={{ marginTop: '20px' }}>
+        <button
+          onClick={handleGoogleLogin}
+          style={{
+            backgroundColor: '#4285F4',
+            color: 'white',
+            padding: '10px 20px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            width: '100%',
+          }}
+        >
+          Login with Google
+        </button>
+      </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
         <p>
