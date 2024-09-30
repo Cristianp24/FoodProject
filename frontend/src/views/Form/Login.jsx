@@ -32,11 +32,7 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3000/users/auth/google/callback'; // Redirigir a la ruta de autenticación con Google
-  };
-
-
+  
   return (
     <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
       <h2>Login</h2>
@@ -59,22 +55,6 @@ const Login = () => {
             required
           />
         </div>
-        <div style={{ marginTop: '20px' }}>
-        <button
-          onClick={handleGoogleLogin}
-          style={{
-            backgroundColor: '#4285F4',
-            color: 'white',
-            padding: '10px 20px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            width: '100%',
-          }}
-        >
-          Login with Google
-        </button>
-      </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
         <p>
