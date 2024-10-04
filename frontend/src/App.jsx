@@ -8,6 +8,7 @@ import Navbar from './components/NavBar/Navbar';
 import UserMeals from './components/UserMeals/userMeals';
 import MealDetails from './views/mealDetail/mealDetails';
 import SignUp from './views/Form/SigIn';
+
 import './App.css';
 function App() {
   //const location = useLocation(); // Use useLocation to determine the path

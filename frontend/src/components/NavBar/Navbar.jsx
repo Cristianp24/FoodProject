@@ -9,12 +9,25 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const checkAuth = () => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  };
+  useEffect(() => {
+    const token = window.location.hash.split('#')[1];
+    if (token) {
+      localStorage.setItem('token', token);
+      window.location.hash = ''; // Elimina el token de la URL
     }
   }, []);
+  
+  useEffect(() => {
+    checkAuth();
+  }, [localStorage.getItem('token')]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -22,22 +35,18 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:3000/users/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        navigate('/login');
-      } else {
-        console.error('Error al realizar logout:', response.status);
-      }
+      // No es necesario hacer una llamada al backend para realizar el logout
+      // En muchos casos, basta con eliminar el token del almacenamiento local
+  
+      // Eliminar el token del localStorage
+      localStorage.removeItem('token');
+  
+      // Actualizar el estado de autenticación
+      setIsAuthenticated(false);
+  
+      // Redirigir al usuario a la página de login
+      navigate('/login');
+  
     } catch (error) {
       console.error('Error al realizar logout:', error);
     }

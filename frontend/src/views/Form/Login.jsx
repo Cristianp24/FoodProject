@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Manejar inicio de sesión local
   const handleLogin = async (event) => {
     event.preventDefault(); // Previene la recarga de la página al enviar el formulario
 
@@ -15,7 +15,7 @@ const Login = () => {
       const response = await fetch('http://localhost:3000/users/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
@@ -32,7 +32,11 @@ const Login = () => {
     }
   };
 
-  
+  // Manejar inicio de sesión con Google (redirige al backend)
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:3000/users/auth/google/callback';
+  };
+
   return (
     <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
       <h2>Login</h2>
@@ -57,10 +61,18 @@ const Login = () => {
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
-        <p>
-          Don't have an account? <a href="/register">Register</a>
-        </p>
       </form>
+
+      <p>or</p>
+
+      {/* Botón de inicio de sesión con Google */}
+      <button onClick={handleGoogleLogin} style={{ backgroundColor: '#4285F4', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+        Login with Google
+      </button>
+
+      <p>
+        Don't have an account? <a href="/register">Register</a>
+      </p>
     </div>
   );
 };
