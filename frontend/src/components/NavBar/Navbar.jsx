@@ -1,5 +1,3 @@
-// src/components/NavBar/Navbar.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
@@ -9,6 +7,8 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
+
+  
   const checkAuth = () => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -17,6 +17,7 @@ const Navbar = () => {
       setIsAuthenticated(false);
     }
   };
+
   useEffect(() => {
     const token = window.location.hash.split('#')[1];
     if (token) {
@@ -24,7 +25,7 @@ const Navbar = () => {
       window.location.hash = ''; // Elimina el token de la URL
     }
   }, []);
-  
+
   useEffect(() => {
     checkAuth();
   }, [localStorage.getItem('token')]);
@@ -35,18 +36,14 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      // No es necesario hacer una llamada al backend para realizar el logout
-      // En muchos casos, basta con eliminar el token del almacenamiento local
-  
       // Eliminar el token del localStorage
       localStorage.removeItem('token');
-  
+
       // Actualizar el estado de autenticación
       setIsAuthenticated(false);
-  
+
       // Redirigir al usuario a la página de login
       navigate('/login');
-  
     } catch (error) {
       console.error('Error al realizar logout:', error);
     }
@@ -61,9 +58,12 @@ const Navbar = () => {
         <a href="/home" className="nav-link">Home</a>
         <a href="/create-meal" className="nav-link">Calculate Meal</a>
         {isAuthenticated ? (
-          <button onClick={handleLogout} className="nav-link logout-button">
-            Logout
-          </button>
+          <>
+             <a href="/meals/users" className="nav-link">Mis comidas</a>
+            <button onClick={handleLogout} className="nav-link logout-button">
+              Logout
+            </button>
+          </>
         ) : (
           <a href="/login" className="nav-link">Login</a>
         )}
