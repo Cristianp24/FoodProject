@@ -4,41 +4,38 @@
   import './UserMeals.css'; // Asegúrate de agregar estilos según sea necesario
 
   const UserMeals = () => {
-    const { user } = useContext(AuthContext); // Obtener el usuario del contexto
+    const { userId } = useContext(AuthContext); // Obtener el ID del usuario del contexto
     const [userMeals, setUserMeals] = useState([]);
-    const [error, setError] = useState(null); // Para manejar errores
-
-    
+    const [error, setError] = useState(null);
+  
     useEffect(() => {
       const fetchUserMeals = async () => {
-        if (!user || !user.token) return;
-    
+        const token = localStorage.getItem('authToken'); // Obtén el token del localStorage
+        if (!userId || !token) return;
+  
         try {
-          const response = await fetch(`http://localhost:3000/meals/users/${user.id}`, {
+          const response = await fetch(`http://localhost:3000/meals/users/${userId}`, {
             method: 'GET',
             headers: {
-              Authorization: `Bearer ${user.token}`,
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           });
-    
+          const data = await response.json();
+          
           if (response.ok) {
-            const meals = await response.json();
-            setUserMeals(meals);
+            setUserMeals(data);
           } else {
-            setError('Failed to fetch meals');
+            setError(data.message || 'Failed to fetch meals');
           }
         } catch (error) {
-          console.error('Error fetching meals:', error);
-          setError('Error fetching meals');
+          setError('An unexpected error occurred');
         }
       };
-    
+  
       fetchUserMeals();
-    }, [user]);
-
-
-
+    }, [userId]);
+  
     return (
       <div className="user-meals-view">
         {error && <p className="error">{error}</p>}
@@ -58,5 +55,6 @@
       </div>
     );
   };
+  
 
   export default UserMeals;

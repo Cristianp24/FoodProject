@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,22 +12,40 @@ const Login = () => {
 
   // Manejar inicio de sesión local
   const handleLogin = async (event) => {
-    event.preventDefault(); // Previene la recarga de la página al enviar el formulario
-
+    event.preventDefault();
+  
     try {
       const response = await fetch('http://localhost:3000/users/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token); // Almacenar el token JWT en localStorage
-        navigate('/home'); // Redirigir al usuario a la página de inicio
+        const data = await response.json(); // Obtener la respuesta en JSON
+        console.log("Login response data:", data); // Verificar la respuesta del servidor
+  
+        if (data.token) {
+          // Decodificar el token para obtener el userId
+          const decodedToken = jwtDecode(data.token);
+          console.log('Decoded token:', decodedToken); // Verificar qué campos tiene el token
+  
+          // Intentar obtener el userId del campo 'id' o del campo 'sub' (para Google)
+          const userId = decodedToken.id || decodedToken.sub; 
+          if (!userId) {
+            throw new Error('User ID not found in token');
+          }
+          
+          localStorage.setItem('token', data.token); // Guardar el token JWT
+          localStorage.setItem('userId', userId); // Guardar el ID de usuario en el localStorage
+  
+          navigate('/home'); // Redirigir al usuario a la página de inicio
+        } else {
+          setError('Login failed: no token received');
+        }
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed'); // Ajustar mensaje de error
+        const errorData = await response.json(); // Capturar mensaje de error
+        setError(errorData.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);

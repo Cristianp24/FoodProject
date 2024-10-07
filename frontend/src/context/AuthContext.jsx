@@ -3,20 +3,22 @@ import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Aquí puedes poner tu lógica para verificar si el usuario está autenticado
-    // Por ejemplo, verificar un token en localStorage o en una cookie
     const token = localStorage.getItem('authToken');
-    if (token) {
+    const id = localStorage.getItem('userId');
+    if (token && id) {
       setIsAuthenticated(true);
+      setUserId(id);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, userId }}>
       {children}
     </AuthContext.Provider>
   );
