@@ -38,6 +38,7 @@ const Navbar = () => {
     try {
       // Eliminar el token del localStorage
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
 
       // Actualizar el estado de autenticación
       setIsAuthenticated(false);

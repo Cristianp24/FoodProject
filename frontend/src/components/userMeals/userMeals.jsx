@@ -10,8 +10,9 @@
   
     useEffect(() => {
       const fetchUserMeals = async () => {
-        const token = localStorage.getItem('authToken'); // Obtén el token del localStorage
+        const token = localStorage.getItem('authToken');  // Obtén el token del localStorage
         if (!userId || !token) return;
+
   
         try {
           const response = await fetch(`http://localhost:3000/meals/users/${userId}`, {
