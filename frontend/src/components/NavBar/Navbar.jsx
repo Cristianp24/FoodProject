@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import {jwtDecode} from 'jwt-decode';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +22,11 @@ const Navbar = () => {
   useEffect(() => {
     const token = window.location.hash.split('#')[1];
     if (token) {
+      const decodedToken = jwtDecode(token); // Decodificar el token
+      const userId = decodedToken.id || decodedToken.sub; // Asignar userId
       localStorage.setItem('token', token);
-      window.location.hash = ''; // Elimina el token de la URL
+      localStorage.setItem('userId', userId); // Almacenar el userId
+      window.location.hash = ''; // Eliminar el token de la URL
     }
   }, []);
 

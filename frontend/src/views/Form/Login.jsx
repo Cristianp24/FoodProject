@@ -55,7 +55,10 @@ const Login = () => {
 
   // Manejar inicio de sesión con Google (redirige al backend)
   const handleGoogleLogin = () => {
+    
     window.location.href = 'http://localhost:3000/users/auth/google/callback';
+
+    
   };
 
   return (
