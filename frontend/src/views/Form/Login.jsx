@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-
-
+import { jwtDecode }  from 'jwt-decode'; // Asegúrate de importar correctamente jwt-decode
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,29 +20,34 @@ const Login = () => {
       });
   
       if (response.ok) {
-        const data = await response.json(); // Obtener la respuesta en JSON
-        console.log("Login response data:", data); // Verificar la respuesta del servidor
-  
+        const data = await response.json();
+        console.log("Login response data:", data);
+
         if (data.token) {
-          // Decodificar el token para obtener el userId
-          const decodedToken = jwtDecode(data.token);
-          console.log('Decoded token:', decodedToken); // Verificar qué campos tiene el token
-  
-          // Intentar obtener el userId del campo 'id' o del campo 'sub' (para Google)
-          const userId = decodedToken.id || decodedToken.sub; 
-          if (!userId) {
-            throw new Error('User ID not found in token');
+          try {
+            // Decodificar el token y verificar el ID de usuario
+            const decodedToken = jwtDecode(data.token);
+            console.log('Decoded token:', decodedToken);
+
+            // Obtener el ID de usuario (usar `id` para local y `sub` para Google)
+            const userId = decodedToken.id || decodedToken.sub;
+            if (!userId) {
+              throw new Error('User ID not found in token');
+            }
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', userId);
+
+            navigate('/home');
+          } catch (decodeError) {
+            console.error('Token decode error:', decodeError);
+            setError('Invalid token received');
           }
-          
-          localStorage.setItem('token', data.token); // Guardar el token JWT
-          localStorage.setItem('userId', userId); // Guardar el ID de usuario en el localStorage
-  
-          navigate('/home'); // Redirigir al usuario a la página de inicio
         } else {
           setError('Login failed: no token received');
         }
       } else {
-        const errorData = await response.json(); // Capturar mensaje de error
+        const errorData = await response.json();
         setError(errorData.message || 'Login failed');
       }
     } catch (error) {
@@ -53,12 +56,10 @@ const Login = () => {
     }
   };
 
-  // Manejar inicio de sesión con Google (redirige al backend)
+  // Manejar inicio de sesión con Google
   const handleGoogleLogin = () => {
-    
-    window.location.href = 'http://localhost:3000/users/auth/google/callback';
-
-    
+    // Redirige al endpoint de Google del backend
+    window.location.href = 'http://localhost:3000/users/auth/google';
   };
 
   return (
@@ -87,10 +88,20 @@ const Login = () => {
         <button type="submit">Login</button>
       </form>
 
-      <p>or</p>
+      <p>Forgot password? <a href="/request-password-reset">Reset Password</a></p>
 
-      {/* Botón de inicio de sesión con Google */}
-      <button onClick={handleGoogleLogin} style={{ backgroundColor: '#4285F4', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+      <button
+        onClick={handleGoogleLogin}
+        style={{
+          backgroundColor: '#4285F4',
+          color: 'white',
+          padding: '10px 20px',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          marginTop: '1rem'
+        }}
+      >
         Login with Google
       </button>
 

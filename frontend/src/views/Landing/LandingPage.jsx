@@ -24,7 +24,8 @@ const LandingPage = () => {
                     height: '100vh', 
                     objectFit: 'cover', 
                     position: 'absolute', 
-                    top: 0, 
+                    top: 0,
+                    borderRadius: '10px',
                     left: 0 
                 }} 
             />

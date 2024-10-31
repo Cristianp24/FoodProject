@@ -9,6 +9,8 @@ import Navbar from './components/NavBar/Navbar';
 import UserMeals from './components/UserMeals/UserMeals';
 import MealDetails from './views/mealDetail/mealDetails';
 import SignUp from './views/Form/SigIn';
+import RequestPasswordReset from './views/Form/RequestPasswordReset.jsx';
+import ResetPassword from './views/Form/ResetPassword.jsx';
 import './App.css';
 function App() {
   //const location = useLocation(); // Use useLocation to determine the path
@@ -24,6 +26,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<SignUp />} />
+          <Route path="/request-password-reset" element={<RequestPasswordReset />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/home" element={<Home />} />
           <Route path="/create-meal" element={<CreateMeal />} />
           <Route path="/meals/:mealId" element={<MealDetails />} />
