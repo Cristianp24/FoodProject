@@ -88,8 +88,12 @@ const Login = () => {
         <button type="submit">Login</button>
       </form>
 
-      <p>Forgot password? <a href="/request-password-reset">Reset Password</a></p>
+      <p> <a href="/request-password-reset">Forgot password?</a></p>
 
+
+      <p>
+        Don't have an account? <a href="/register">Register</a>
+      </p>
       <button
         onClick={handleGoogleLogin}
         style={{
@@ -104,10 +108,6 @@ const Login = () => {
       >
         Login with Google
       </button>
-
-      <p>
-        Don't have an account? <a href="/register">Register</a>
-      </p>
     </div>
   );
 };
