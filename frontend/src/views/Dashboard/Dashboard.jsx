@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import UsersTab from './Components/UsersTab';
-import FoodsTab from './Components/FoodsTab';
-import ProfileTab from './Components/ProfileTab';
+import UsersTab from './Components/UsersTab/UsersTab';
+import FoodsTab from './Components/FoodsTab/FoodsTab';
+import ProfileTab from './Components/ProfileTab/ProfileTab';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('users');
@@ -22,9 +23,9 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-tabs">
-        <button onClick={() => setActiveTab('users')}>Users</button>
-        <button onClick={() => setActiveTab('foods')}>Foods</button>
-        <button onClick={() => setActiveTab('profile')}>Profile</button>
+        <button onClick={() => setActiveTab('users')} className={activeTab === 'users' ? 'active' : ''}>Users</button>
+        <button onClick={() => setActiveTab('foods')} className={activeTab === 'foods' ? 'active' : ''}>Foods</button>
+        <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>Profile</button>
       </div>
       <div className="dashboard-content">
         {renderTabContent()}

@@ -1,0 +1,14 @@
+.foods-tab {
+    padding: 20px;
+  }
+  
+  .foods-list {
+    margin-top: 20px;
+  }
+  
+  .food-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  

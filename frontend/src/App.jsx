@@ -12,13 +12,14 @@ import SignUp from './views/Form/SigIn';
 import RequestPasswordReset from './views/Form/RequestPasswordReset.jsx';
 import ResetPassword from './views/Form/ResetPassword.jsx';
 import './App.css';
+import Dashboard from './views/Dashboard/Dashboard.jsx';
 function App() {
   //const location = useLocation(); // Use useLocation to determine the path
 
   return (
     <div className="app-container">
   
-      {location.pathname !== '/' && <Navbar />}
+      {location.pathname !== '/' && location.pathname !== '/dashboard' && <Navbar />}
 
       <div className="main-content">
       <AuthProvider>
@@ -32,6 +33,7 @@ function App() {
           <Route path="/create-meal" element={<CreateMeal />} />
           <Route path="/meals/:mealId" element={<MealDetails />} />
           <Route path="/meals/users" element={<UserMeals />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
         </AuthProvider>
       </div>
