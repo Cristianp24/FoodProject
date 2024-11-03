@@ -3,13 +3,29 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  padding: 20px; /* Agrega padding para evitar que se superponga con el navbar */
 }
 
 .food-card {
-  width: 250px;
+  width: calc(100% / 3 - 40px); /* 3 cartas por fila con espacio */
+  max-width: 250px; /* Ancho máximo */
   height: 350px;
   perspective: 1000px;
   cursor: pointer;
+  margin-bottom: 20px; /* Espacio en la parte inferior */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .food-card {
+    width: calc(100% / 2 - 40px); /* 2 cartas por fila */
+  }
+}
+
+@media (max-width: 480px) {
+  .food-card {
+    width: 100%; /* 1 carta por fila en pantallas pequeñas */
+  }
 }
 
 .food-card-inner {
@@ -75,5 +91,3 @@
   border: 2px solid #4CAF50; /* Resalta la tarjeta seleccionada */
   background-color: #d3ffd3; /* Cambia el color de fondo cuando esté seleccionada */
 }
-
-

@@ -16,7 +16,7 @@ const Home = () => {
         console.error('Error fetching foods:', error);
       }
     };
-    
+
     fetchFoods();
   }, []);
 
@@ -34,7 +34,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
+    <div style={{ padding: '20px', textAlign: 'center', marginTop: '70px' }}>
       <div className="food-grid">
         {foods.map(food => (
           <div 
@@ -59,7 +59,6 @@ const Home = () => {
           </div>
         ))}
       </div>
-
     </div>
   );
 };

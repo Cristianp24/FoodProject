@@ -115,10 +115,10 @@ const CreateMeal = () => {
                 type="number"
                 value={quantities[food.id] || ''}
                 onChange={(e) => handleQuantityChange(food.id, e.target.value)}
-                placeholder="Grams"
+                placeholder={`Cantidad (${food.unit})`}
                 min="0"
-              />
-              <span>Grams</span>
+                />
+              
               <button className="remove-food-btn" onClick={() => handleRemoveFood(food.id)}>
                 &times;
               </button>
@@ -150,6 +150,6 @@ const CreateMeal = () => {
       </button>
     </div>
   );
-};
+}
 
 export default CreateMeal;

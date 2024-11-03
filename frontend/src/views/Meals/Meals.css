@@ -1,5 +1,4 @@
 /* CreateMeal.css */
-
 .container {
   padding: 20px;
   display: flex;
@@ -25,11 +24,6 @@
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.food-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
 .food-image {
   width: 60%;
   height: auto;
@@ -38,7 +32,7 @@
 
 .nutrition-summary {
   border: 1px solid #ccc;
-  margin-top: 20px;
+  margin-top: 20px; /* Asegúrate de que haya suficiente espacio */
   padding: 20px;
   border-radius: 8px;
   width: 200px;
@@ -46,7 +40,20 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.save-meal-btn {
+.meal-name-container {
+  margin-top: 20px; /* Espaciado entre el resumen de nutrición y el input del nombre de la comida */
+  width: 100%;
+}
+
+input[type="text"], input[type="number"] {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 8px;
+  margin: 10px 0; /* Espaciado entre inputs */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.save-meal-btn, .clear-all-btn {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
@@ -60,12 +67,4 @@
 
 .save-meal-btn:hover {
   background-color: #45a049;
-}
-
-input[type="number"] {
-  width: 100px;
-  padding: 8px;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
