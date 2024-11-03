@@ -2,13 +2,21 @@ import React, { useState } from 'react';
 import UsersTab from './Components/UsersTab/UsersTab';
 import FoodsTab from './Components/FoodsTab/FoodsTab';
 import ProfileTab from './Components/ProfileTab/ProfileTab';
+import { useNavigate } from 'react-router-dom'; 
 import './Dashboard.css';
 
 const Dashboard = () => {
+  
   const [activeTab, setActiveTab] = useState('users');
   const [isFoodFormOpen, setIsFoodFormOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+
+  const navigate = useNavigate(); // Inicializa useHistory
+
+  const handleGoHome = () => {
+    navigate('/home'); // Redirige al home
+  };
 
   // Función para abrir el formulario de alimentos
   const handleOpenFoodForm = (food) => {
@@ -55,7 +63,9 @@ const Dashboard = () => {
         <button onClick={() => setActiveTab('users')} className={activeTab === 'users' ? 'active' : ''}>Users</button>
         <button onClick={() => setActiveTab('foods')} className={activeTab === 'foods' ? 'active' : ''}>Foods</button>
         <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>Profile</button>
+        <button className="go-home-btn" onClick={handleGoHome}>Go to Home</button>
       </div>
+
       <div className="dashboard-content">
         {renderTabContent()}
       </div>

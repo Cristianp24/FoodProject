@@ -6,6 +6,22 @@
     max-width: 900px;
     margin: auto;
   }
+
+  .go-home-btn {
+    margin-top: 20px; /* Espacio entre el contenido y el botón */
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .go-home-btn:hover {
+    background-color: #0056b3; /* Color al pasar el mouse */
+  }
   
   .dashboard-tabs {
     display: flex;
