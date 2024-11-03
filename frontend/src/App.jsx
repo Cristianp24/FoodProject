@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthProvider } from './context/AuthContext';
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import LandingPage from './views/Landing/LandingPage';
 import Home from './views/Home/Home';
 import Login from './views/Form/Login';
@@ -15,7 +15,7 @@ import Dashboard from './views/Dashboard/Dashboard.jsx';
 import FoodForm from './views/Dashboard/Components/FoodsTab/FoodForm.jsx';
 import './App.css';
 function App() {
-  //const location = useLocation(); // Use useLocation to determine the path
+  const location = useLocation(); // Use useLocation to determine the path
 
   return (
     <div className="app-container">
