@@ -117,8 +117,7 @@ const CreateMeal = () => {
                 onChange={(e) => handleQuantityChange(food.id, e.target.value)}
                 placeholder={`Cantidad (${food.unit})`}
                 min="0"
-                />
-              
+              />
               <button className="remove-food-btn" onClick={() => handleRemoveFood(food.id)}>
                 &times;
               </button>

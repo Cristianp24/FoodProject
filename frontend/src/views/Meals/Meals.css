@@ -1,5 +1,6 @@
 /* CreateMeal.css */
 .container {
+  margin-top: 30px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -7,6 +8,7 @@
 }
 
 .food-card-container {
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
