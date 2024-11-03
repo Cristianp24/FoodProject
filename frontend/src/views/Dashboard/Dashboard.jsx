@@ -6,18 +6,47 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('users');
+  const [isFoodFormOpen, setIsFoodFormOpen] = useState(false);
+  const [selectedFood, setSelectedFood] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Función para abrir el formulario de alimentos
+  const handleOpenFoodForm = (food) => {
+    setSelectedFood(food);
+    setIsFoodFormOpen(true);
+  };
+
+  // Función para cerrar el formulario de alimentos
+  const handleCloseFoodForm = () => {
+    setIsFoodFormOpen(false);
+    setActiveTab('foods'); // Cambia a la pestaña de alimentos al cerrar el formulario
+  };
+
+  const handleFoodUpdated = (message) => {
+    setIsFoodFormOpen(false);
+    setActiveTab('foods');
+    setSuccessMessage(message); // Muestra el mensaje de éxito
+  };
 
   const renderTabContent = () => {
-    switch (activeTab) {
-      case 'users':
-        return <UsersTab />;
-      case 'foods':
-        return <FoodsTab />;
-      case 'profile':
-        return <ProfileTab />;
-      default:
-        return null;
+    if (isFoodFormOpen) {
+      return (
+        <FoodForm
+          food={selectedFood}
+          onClose={handleCloseFoodForm}
+          onFoodUpdated={() => handleFoodUpdated('¡Alimento creado/actualizado exitosamente!')}
+        />
+      );
     }
+
+    return (
+      <>
+        {successMessage && <div className="success-message">{successMessage}</div>}
+        {activeTab === 'users' && <UsersTab />}
+        {activeTab === 'foods' && <FoodsTab onAddFood={() => handleOpenFoodForm(null)} onEditFood={handleOpenFoodForm} />}
+        {activeTab === 'profile' && <ProfileTab />}
+      </>
+    );
   };
 
   return (

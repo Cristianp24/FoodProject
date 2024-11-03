@@ -37,6 +37,7 @@ const Login = () => {
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', userId);
+            localStorage.setItem('userRole', decodedToken.role);
 
             navigate('/home');
           } catch (decodeError) {

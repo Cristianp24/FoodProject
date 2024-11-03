@@ -11,8 +11,9 @@ import MealDetails from './views/mealDetail/mealDetails';
 import SignUp from './views/Form/SigIn';
 import RequestPasswordReset from './views/Form/RequestPasswordReset.jsx';
 import ResetPassword from './views/Form/ResetPassword.jsx';
-import './App.css';
 import Dashboard from './views/Dashboard/Dashboard.jsx';
+import FoodForm from './views/Dashboard/Components/FoodsTab/FoodForm.jsx';
+import './App.css';
 function App() {
   //const location = useLocation(); // Use useLocation to determine the path
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/request-password-reset" element={<RequestPasswordReset />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/create-food" element={<FoodForm />} />
           <Route path="/create-meal" element={<CreateMeal />} />
           <Route path="/meals/:mealId" element={<MealDetails />} />
           <Route path="/meals/users" element={<UserMeals />} />
