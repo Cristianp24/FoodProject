@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './FoodForm.css';
 
@@ -12,6 +13,7 @@ const FoodForm = ({ food, onClose, onFoodUpdated }) => {
   const [quanty, setQuanty] = useState('');
   const [unit, setUnit] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (food) {
@@ -46,6 +48,10 @@ const FoodForm = ({ food, onClose, onFoodUpdated }) => {
     } catch (error) {
       console.error('Error al guardar el alimento:', error.message);
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/dashboard');
   };
 
   return (
@@ -115,7 +121,10 @@ const FoodForm = ({ food, onClose, onFoodUpdated }) => {
           onChange={(e) => setImageUrl(e.target.value)}
         />
         <button type="submit">{food ? 'Actualizar' : 'Crear'}</button>
-        <button type="button" onClick={onClose}>Cancelar</button>
+        <button type="button" onClick={handleCancel}>
+      Cancelar
+    </button>
+        
       </form>
     </div>
   );
