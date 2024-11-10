@@ -76,7 +76,7 @@ const CreateMeal = () => {
       });
       if (response.ok) {
         alert('Meal created successfully');
-        window.location.href = '/';
+        window.location.href = '/home';
       } else {
         alert('Failed to create meal');
       }
