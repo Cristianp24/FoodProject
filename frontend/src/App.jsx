@@ -13,6 +13,7 @@ import RequestPasswordReset from './views/Form/RequestPasswordReset.jsx';
 import ResetPassword from './views/Form/ResetPassword.jsx';
 import Dashboard from './views/Dashboard/Dashboard.jsx';
 import FoodForm from './views/Dashboard/Components/FoodsTab/FoodForm.jsx';
+import ProtectedRoute from './context/ProtectedRoute.jsx';
 import './App.css';
 function App() {
   const location = useLocation(); // Use useLocation to determine the path
@@ -35,7 +36,7 @@ function App() {
           <Route path="/create-meal" element={<CreateMeal />} />
           <Route path="/meals/:mealId" element={<MealDetails />} />
           <Route path="/meals/users" element={<UserMeals />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
         </AuthProvider>
       </div>
