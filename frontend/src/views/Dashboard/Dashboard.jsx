@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import UsersTab from './Components/UsersTab/UsersTab';
 import FoodsTab from './Components/FoodsTab/FoodsTab';
 import ProfileTab from './Components/ProfileTab/ProfileTab';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import FoodEditModal from '../../components/EditFood/FoodEditModal'; // Importar el modal
 import './Dashboard.css';
 
 const Dashboard = () => {
-  
   const [activeTab, setActiveTab] = useState('users');
   const [isFoodFormOpen, setIsFoodFormOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
@@ -18,16 +18,10 @@ const Dashboard = () => {
     navigate('/home'); // Redirige al home
   };
 
-  // Función para abrir el formulario de alimentos
-  const handleOpenFoodForm = (food) => {
-    setSelectedFood(food);
-    setIsFoodFormOpen(true);
-  };
-
-  // Función para cerrar el formulario de alimentos
-  const handleCloseFoodForm = () => {
-    setIsFoodFormOpen(false);
-    setActiveTab('foods'); // Cambia a la pestaña de alimentos al cerrar el formulario
+  // Función para abrir el modal de edición de alimentos
+  const handleEditFood = (food) => {
+    setSelectedFood(food); // Setea el alimento seleccionado
+    setIsFoodFormOpen(true); // Abre el modal
   };
 
   const handleFoodUpdated = (message) => {
@@ -37,12 +31,12 @@ const Dashboard = () => {
   };
 
   const renderTabContent = () => {
-    if (isFoodFormOpen) {
+    if (isFoodFormOpen && selectedFood) {
       return (
-        <FoodForm
-          food={selectedFood}
-          onClose={handleCloseFoodForm}
-          onFoodUpdated={() => handleFoodUpdated('¡Alimento creado/actualizado exitosamente!')}
+        <FoodEditModal
+          foodId={selectedFood.id}
+          onClose={() => setIsFoodFormOpen(false)} // Cierra el modal
+          onFoodUpdated={handleFoodUpdated}
         />
       );
     }
@@ -51,7 +45,7 @@ const Dashboard = () => {
       <>
         {successMessage && <div className="success-message">{successMessage}</div>}
         {activeTab === 'users' && <UsersTab />}
-        {activeTab === 'foods' && <FoodsTab onAddFood={() => handleOpenFoodForm(null)} onEditFood={handleOpenFoodForm} />}
+        {activeTab === 'foods' && <FoodsTab onEditFood={handleEditFood} />}
         {activeTab === 'profile' && <ProfileTab />}
       </>
     );
