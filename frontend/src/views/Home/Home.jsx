@@ -7,6 +7,8 @@ const Home = () => {
   const [selectedFoods, setSelectedFoods] = useState(JSON.parse(localStorage.getItem('selectedFoods')) || []);
   const [filteredFoods, setFilteredFoods] = useState([]); // Almacena alimentos filtrados
   const [searchQuery, setSearchQuery] = useState(''); // Término de búsqueda
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const [foodsPerPage] = useState(12); // Número de alimentos por página
 
   useEffect(() => {
     const fetchFoods = async () => {
@@ -22,6 +24,36 @@ const Home = () => {
 
     fetchFoods();
   }, []);
+
+  // Calcular los alimentos a mostrar en la página actual
+  const indexOfLastFood = currentPage * foodsPerPage;
+  const indexOfFirstFood = indexOfLastFood - foodsPerPage;
+  const currentFoods = filteredFoods.slice(indexOfFirstFood, indexOfLastFood);
+
+  // Cambiar a la página siguiente
+  const nextPage = () => {
+    if (currentPage < Math.ceil(filteredFoods.length / foodsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Cambiar a la página anterior
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Ir a una página específica
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Generar números de página
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredFoods.length / foodsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
   // Filtrar alimentos según el término de búsqueda
   useEffect(() => {
@@ -54,7 +86,7 @@ const Home = () => {
       {/* Alimentos filtrados */}
       <div style={{ padding: '20px', textAlign: 'center', marginTop: '70px' }}>
         <div className="food-grid">
-          {filteredFoods.map((food) => (
+          {currentFoods.map((food) => (
             <div
               key={food.id}
               className={`food-card ${
@@ -79,6 +111,25 @@ const Home = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Paginación */}
+      <div className="pagination">
+        <button onClick={prevPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        {pageNumbers.map((number) => (
+          <button
+            key={number}
+            onClick={() => goToPage(number)}
+            className={currentPage === number ? 'active' : ''}
+          >
+            {number}
+          </button>
+        ))}
+        <button onClick={nextPage} disabled={currentPage === pageNumbers.length}>
+          Next
+        </button>
       </div>
     </div>
   );

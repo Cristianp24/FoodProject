@@ -92,3 +92,26 @@
   background-color: #d3ffd3; /* Cambia el color de fondo cuando esté seleccionada */
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #f1f1f1;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: #4caf50;
+  color: white;
+}
