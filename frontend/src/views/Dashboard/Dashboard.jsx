@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [isFoodFormOpen, setIsFoodFormOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
-  const [successMessage, setSuccessMessage] = useState('');
+  
 
   const navigate = useNavigate(); // Inicializa useHistory
 
@@ -43,7 +43,7 @@ const Dashboard = () => {
 
     return (
       <>
-        {successMessage && <div className="success-message">{successMessage}</div>}
+        
         {activeTab === 'users' && <UsersTab />}
         {activeTab === 'foods' && <FoodsTab onEditFood={handleEditFood} />}
         {activeTab === 'profile' && <ProfileTab />}
