@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import LandingPage from './views/Landing/LandingPage';
@@ -17,11 +17,11 @@ import ProtectedRoute from './context/ProtectedRoute.jsx';
 import './App.css';
 function App() {
   const location = useLocation(); // Use useLocation to determine the path
-
+  const [searchQuery, setSearchQuery] = useState('');
   return (
     <div className="app-container">
   
-      {location.pathname !== '/' && location.pathname !== '/dashboard' && <Navbar />}
+      {location.pathname !== '/' && location.pathname !== '/dashboard' && <Navbar setSearchQuery={setSearchQuery} />}
 
       <div className="main-content">
       <AuthProvider>
@@ -31,7 +31,7 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/request-password-reset" element={<RequestPasswordReset />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Home searchQuery={searchQuery} />} />
           <Route path="/create-food" element={<FoodForm />} />
           <Route path="/create-meal" element={<CreateMeal />} />
           <Route path="/meals/:mealId" element={<MealDetails />} />

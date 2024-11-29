@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; // Importa correctamente jwtDecode
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'; // Asegúrate de que este import sea correcto
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ setSearchQuery, searchQuery }) => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // Nuevo estado para verificar rol de admin
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const checkAuth = () => {
@@ -40,6 +41,7 @@ const Navbar = () => {
     checkAuth();
   }, [localStorage.getItem('token')]);
 
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -57,11 +59,27 @@ const Navbar = () => {
     }
   };
 
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value.toLowerCase()); // Actualiza el término de búsqueda
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
         <a href="/" className="navbar-logo">Landing</a>
       </div>
+      <div className="search-container">
+        {location.pathname === '/home' && (
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearch}
+            placeholder="Search foods..."
+            className="search-bar"
+          />
+        )}
+      </div>
+
       <div className={`navbar-links ${isOpen ? 'open' : ''}`}>
         <a href="/home" className="nav-link">Home</a>
         <a href="/create-meal" className="nav-link">Calculate Meal</a>
@@ -77,6 +95,9 @@ const Navbar = () => {
           <a href="/login" className="nav-link">Login</a>
         )}
       </div>
+
+      {/* Barra de búsqueda dentro de la navbar */}
+
       <div className="navbar-toggle" onClick={toggleMenu}>
         <span className="hamburger"></span>
         <span className="hamburger"></span>
