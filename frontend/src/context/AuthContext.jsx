@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Estado de carga
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     const id = localStorage.getItem('userId');
     const role = localStorage.getItem('userRole');
 

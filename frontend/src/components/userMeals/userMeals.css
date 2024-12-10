@@ -56,3 +56,20 @@
   .delete-button:hover {
     background-color: darkred;
   }
+
+  .fetch-button {
+    position: absolute;
+    margin-top: 200px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 80px;
+    background-color: #4CAF50;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fetch-button:hover {
+    background-color: #45a049;
+  }

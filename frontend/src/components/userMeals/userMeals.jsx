@@ -11,8 +11,11 @@ const UserMeals = () => {
 
   useEffect(() => {
     const fetchUserMeals = async () => {
-      const token = localStorage.getItem('authToken');
-      if (!userId || !token) return;
+      const token = localStorage.getItem('token');
+      // No es necesario obtener userId de nuevo, ya que lo tenemos desde el contexto
+      if (!userId || !token) {
+        return "User is not autenticated";
+      }
 
       try {
         const response = await fetch(`http://localhost:3000/meals/users/${userId}`, {
@@ -23,7 +26,7 @@ const UserMeals = () => {
           },
         });
         const data = await response.json();
-        
+
         if (response.ok) {
           setUserMeals(data);
         } else {
@@ -35,7 +38,7 @@ const UserMeals = () => {
     };
 
     fetchUserMeals();
-  }, [userId]);
+  }, [userId]); 
 
   const handleDeleteMeal = async (mealId) => {
     const confirmed = window.confirm("Are you sure you want to delete this meal?");
@@ -65,8 +68,10 @@ const UserMeals = () => {
     navigate(`/meals/${mealId}`); // Redirige al componente de detalles de la comida
   };
 
+
   return (
     <div className="user-meals-view">
+     
       {error && <p className="error">{error}</p>}
       {userMeals.length === 0 ? (
         <p>No meals found.</p>
@@ -93,6 +98,7 @@ const UserMeals = () => {
               </button>
             </div>
           ))}
+          
         </div>
       )}
     </div>
