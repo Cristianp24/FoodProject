@@ -17,34 +17,53 @@ const FoodForm = ({ food, onClose, onFoodUpdated }) => {
 
   useEffect(() => {
     if (food) {
-      setName(food.name);
-      setProtein(food.protein);
-      setCarbohydrates(food.carbohydrates);
-      setFat(food.fat);
-      setFiber(food.fiber);
-      setCalories(food.calories);
-      setQuanty(food.quanty);
-      setUnit(food.unit);
-      setImageUrl(food.imageUrl);
+      setName(food.name || ''); // Si food ya tiene un nombre, se carga. Si no, se pone vacío.
+      setProtein(food.protein || '');
+      setCarbohydrates(food.carbohydrates || '');
+      setFat(food.fat || '');
+      setFiber(food.fiber || '');
+      setCalories(food.calories || '');
+      setQuanty(food.quanty || '');
+      setUnit(food.unit || '');
+      setImageUrl(food.imageUrl || '');
     }
   }, [food]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem('token');
     try {
+      const data = {
+        name,
+        protein,
+        carbohydrates,
+        fat,
+        fiber,
+        calories,
+        quanty,
+        unit,
+        imageUrl
+      };
+
       if (food) {
-        await axios.put(`http://localhost:3000/foods/${food.id}`, { name, protein, carbohydrates, fat, fiber, calories, quanty, unit, imageUrl }, {
+        // Actualizar un alimento existente
+        await axios.put(`http://localhost:3000/foods/${food.id}`, data, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        onFoodUpdated('¡Alimento actualizado exitosamente!');
+        if (onFoodUpdated) onFoodUpdated('¡Alimento actualizado exitosamente!');
       } else {
-        const response = await axios.post('http://localhost:3000/foods', { name, protein, carbohydrates, fat, fiber, calories, quanty, unit, imageUrl }, {
+        // Crear un nuevo alimento
+        const response = await axios.post('http://localhost:3000/foods', data, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        onFoodUpdated('¡Alimento creado exitosamente!');
+        if (onFoodUpdated) onFoodUpdated('¡Alimento creado exitosamente!');
       }
-      onClose();
+
+      // Cerrar el formulario, si onClose es una función
+      if (onClose) onClose();
+      else navigate('/dashboard'); // Si onClose no está definido, redirige a /dashboard
+
     } catch (error) {
       console.error('Error al guardar el alimento:', error.message);
     }
@@ -122,9 +141,8 @@ const FoodForm = ({ food, onClose, onFoodUpdated }) => {
         />
         <button type="submit">{food ? 'Actualizar' : 'Crear'}</button>
         <button type="button" onClick={handleCancel}>
-      Cancelar
-    </button>
-        
+          Cancelar
+        </button>
       </form>
     </div>
   );

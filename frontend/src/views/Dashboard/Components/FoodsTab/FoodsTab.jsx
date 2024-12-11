@@ -17,14 +17,15 @@ const FoodsTab = () => {
     const fetchFoods = async () => {
       try {
         const response = await axios.get('http://localhost:3000/foods');
-        setFoods(response.data);
+        setFoods(response.data); // Actualizar los alimentos
         setFilteredFoods(response.data); // Inicializar con todos los alimentos
       } catch (error) {
         console.error('Error fetching foods:', error.message);
       }
     };
     fetchFoods();
-  }, []);
+  }, []);  // Este `useEffect` solo se ejecuta una vez al cargar el componente
+  
 
   // Función para manejar la búsqueda
   const handleSearch = (e) => {
@@ -52,6 +53,8 @@ const FoodsTab = () => {
     if (window.confirm('Are you sure you want to delete this food?')) {
       try {
         await axios.delete(`http://localhost:3000/foods/${foodId}`);
+  
+        // Actualizar los estados de foods y filteredFoods
         setFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId));
         setFilteredFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId)); // Filtrar también en los alimentos mostrados
       } catch (error) {
@@ -73,19 +76,32 @@ const FoodsTab = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Actualizar el alimento en el backend
       await axios.put(`http://localhost:3000/foods/${currentFood.id}`, currentFood);
       alert('Food updated successfully!');
-      setFoods((prevFoods) =>
-        prevFoods.map((food) =>
+  
+      // Actualizar los alimentos en el estado de foods y filteredFoods
+      setFoods((prevFoods) => {
+        // Reemplazamos el alimento que se está editando con el nuevo alimento
+        return prevFoods.map((food) =>
           food.id === currentFood.id ? { ...food, ...currentFood } : food
-        )
-      );
+        );
+      });
+  
+      // También actualizar filteredFoods
+      setFilteredFoods((prevFoods) => {
+        return prevFoods.map((food) =>
+          food.id === currentFood.id ? { ...food, ...currentFood } : food
+        );
+      });
+  
       setShowModal(false);
       setCurrentFood(null);
     } catch (error) {
       console.error('Error updating food:', error.message);
     }
   };
+    
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -169,7 +185,78 @@ const FoodsTab = () => {
           <div className="modal-content">
             <h3>Edit Food: {currentFood.name}</h3>
             <form onSubmit={handleEditSubmit}>
-              {/* Campos del formulario para editar el alimento */}
+              <div>
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={currentFood.name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Protein</label>
+                <input
+                  type="text"
+                  name="protein"
+                  value={currentFood.protein}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Carbohydrates</label>
+                <input
+                  type="text"
+                  name="carbohydrates"
+                  value={currentFood.carbohydrates}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Fat</label>
+                <input
+                  type="text"
+                  name="fat"
+                  value={currentFood.fat}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Fiber</label>
+                <input
+                  type="text"
+                  name="fiber"
+                  value={currentFood.fiber}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Calories</label>
+                <input
+                  type="text"
+                  name="calories"
+                  value={currentFood.calories}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Quantity</label>
+                <input
+                  type="text"
+                  name="quanty"
+                  value={currentFood.quanty}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Unit</label>
+                <input
+                  type="text"
+                  name="unit"
+                  value={currentFood.unit}
+                  onChange={handleChange}
+                />
+              </div>
               <button type="submit">Save Changes</button>
               <button type="button" onClick={handleModalClose}>Cancel</button>
             </form>
