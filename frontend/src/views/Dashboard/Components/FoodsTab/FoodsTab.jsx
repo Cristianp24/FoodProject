@@ -5,58 +5,51 @@ import './FoodsTab.css';
 
 const FoodsTab = () => {
   const [foods, setFoods] = useState([]);
-  const [filteredFoods, setFilteredFoods] = useState([]); // Para almacenar los alimentos filtrados
+  const [filteredFoods, setFilteredFoods] = useState([]);
   const [showModal, setShowModal] = useState(false); 
   const [currentFood, setCurrentFood] = useState(null); 
-  const [searchQuery, setSearchQuery] = useState(''); // Estado para la búsqueda
-  const [currentPage, setCurrentPage] = useState(1); // Página actual
-  const foodsPerPage = 12; // Número de alimentos por página
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const foodsPerPage = 12;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFoods = async () => {
       try {
         const response = await axios.get('http://localhost:3000/foods');
-        setFoods(response.data); // Actualizar los alimentos
-        setFilteredFoods(response.data); // Inicializar con todos los alimentos
+        console.log('Fetched foods:', response.data); // Verifica los datos que llegan
+        setFoods(response.data); 
+        setFilteredFoods(response.data); 
       } catch (error) {
         console.error('Error fetching foods:', error.message);
       }
     };
     fetchFoods();
-  }, []);  // Este `useEffect` solo se ejecuta una vez al cargar el componente
-  
+  }, []);
 
-  // Función para manejar la búsqueda
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
 
-    // Filtrar los alimentos por nombre
     const filtered = foods.filter((food) =>
       food.name.toLowerCase().includes(query)
     );
     setFilteredFoods(filtered);
-    setCurrentPage(1); // Resetear a la primera página cuando se haga una búsqueda
+    setCurrentPage(1);
   };
 
-  // Calcular los alimentos a mostrar según la página actual
   const indexOfLastFood = currentPage * foodsPerPage;
   const indexOfFirstFood = indexOfLastFood - foodsPerPage;
   const currentFoods = filteredFoods.slice(indexOfFirstFood, indexOfLastFood);
 
-  // Función para cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Función para eliminar un alimento
   const deleteFood = async (foodId) => {
     if (window.confirm('Are you sure you want to delete this food?')) {
       try {
         await axios.delete(`http://localhost:3000/foods/${foodId}`);
-  
-        // Actualizar los estados de foods y filteredFoods
         setFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId));
-        setFilteredFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId)); // Filtrar también en los alimentos mostrados
+        setFilteredFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId)); 
       } catch (error) {
         console.error('Error deleting food:', error.message);
       }
@@ -76,24 +69,20 @@ const FoodsTab = () => {
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Actualizar el alimento en el backend
       await axios.put(`http://localhost:3000/foods/${currentFood.id}`, currentFood);
       alert('Food updated successfully!');
   
-      // Actualizar los alimentos en el estado de foods y filteredFoods
-      setFoods((prevFoods) => {
-        // Reemplazamos el alimento que se está editando con el nuevo alimento
-        return prevFoods.map((food) =>
+      setFoods((prevFoods) => 
+        prevFoods.map((food) =>
           food.id === currentFood.id ? { ...food, ...currentFood } : food
-        );
-      });
+        )
+      );
   
-      // También actualizar filteredFoods
-      setFilteredFoods((prevFoods) => {
-        return prevFoods.map((food) =>
+      setFilteredFoods((prevFoods) =>
+        prevFoods.map((food) =>
           food.id === currentFood.id ? { ...food, ...currentFood } : food
-        );
-      });
+        )
+      );
   
       setShowModal(false);
       setCurrentFood(null);
@@ -101,7 +90,6 @@ const FoodsTab = () => {
       console.error('Error updating food:', error.message);
     }
   };
-    
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,7 +99,6 @@ const FoodsTab = () => {
     }));
   };
 
-  // Calcular el número total de páginas
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredFoods.length / foodsPerPage); i++) {
     pageNumbers.push(i);
@@ -120,8 +107,7 @@ const FoodsTab = () => {
   return (
     <div className="foods-tab">
       <h2>Manage Foods</h2>
-      
-      {/* Barra de búsqueda */}
+
       <input
         type="text"
         placeholder="Search by name..."
@@ -133,6 +119,7 @@ const FoodsTab = () => {
       <button onClick={() => navigate('/create-food')} className="add-food-button">
         Add Food
       </button>
+      
       <table>
         <thead>
           <tr>
@@ -170,7 +157,6 @@ const FoodsTab = () => {
         </tbody>
       </table>
 
-      {/* Paginación */}
       <div className="pagination">
         {pageNumbers.map((number) => (
           <button key={number} onClick={() => paginate(number)} className="page-button">
@@ -179,7 +165,6 @@ const FoodsTab = () => {
         ))}
       </div>
 
-      {/* Modal para editar alimento */}
       {showModal && currentFood && (
         <div className="modal">
           <div className="modal-content">

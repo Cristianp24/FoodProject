@@ -20,7 +20,8 @@ const Dashboard = () => {
 
   // Función para abrir el modal de edición de alimentos
   const handleEditFood = (food) => {
-    setSelectedFood(food); // Setea el alimento seleccionado
+    console.log('Editing food:', food); // Verifica que el alimento seleccionado sea el correcto
+    setSelectedFood(food); // Establece el alimento seleccionado
     setIsFoodFormOpen(true); // Abre el modal
   };
 

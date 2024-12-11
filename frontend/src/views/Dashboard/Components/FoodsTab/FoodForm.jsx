@@ -16,8 +16,9 @@ const FoodForm = ({ food, onClose, onFoodUpdated }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('Food data received:', food);  // Para depurar
     if (food) {
-      setName(food.name || ''); // Si food ya tiene un nombre, se carga. Si no, se pone vacío.
+      setName(food.name || '');
       setProtein(food.protein || '');
       setCarbohydrates(food.carbohydrates || '');
       setFat(food.fat || '');
