@@ -66,7 +66,9 @@ const Navbar = ({ setSearchQuery, searchQuery }) => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <a href="/" className="navbar-logo">Landing</a>
+      <a href="/">
+  <img src="/public/vite.png" alt="Logo" className="navbar-logo"/>
+</a>
       </div>
       <div className="search-container">
         {location.pathname === '/home' && (

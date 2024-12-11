@@ -16,17 +16,6 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Navbar brand/logo */
-.navbar-brand {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-logo {
-  font-size: 18px; /* Ajusta el tamaño del logo */
-  text-decoration: none;
-  color: white;
-}
 
 /* Navbar links */
 .navbar-links {
@@ -117,4 +106,18 @@
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  margin: 10px 10px 0px;
+  width: 50px; /* Ajusta el tamaño de la imagen */
+  height: 50px; /* Ajusta el tamaño de la imagen */
+  border-radius: 50%;
+  object-fit: cover; /* Hace que la imagen sea redonda */
+  
 }
