@@ -1,20 +1,59 @@
-.users-tab {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .user-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  .user-row button.suspended {
-    background-color: gray;
-    cursor: not-allowed;
-  }
-    
+.search-bar {
+  margin-bottom: 20px;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.page-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.page-button:hover {
+  background-color: #bbb;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+select {
+  margin-left: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.status-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.suspend {
+  background-color: #f44336;
+  color: white;
+}
+
+.activate {
+  background-color: #4caf50;
+  color: white;
+}
+
+.suspend:hover, .activate:hover {
+  opacity: 0.8;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}

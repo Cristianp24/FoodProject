@@ -1,14 +1,56 @@
-.foods-tab {
-    padding: 20px;
-  }
-  
-  .foods-list {
-    margin-top: 20px;
-  }
-  
-  .food-item {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
-  }
-  
+button {
+  background-color: red; /* Fondo transparente */
+  border: none; /* Eliminar borde */
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Estilos adicionales opcionales */
+button:hover {
+  background-color: #f0f0f0; /* Un fondo sutil al pasar el cursor */
+}
+
+.add-food-button {
+  background-color: green;
+  border: 1px solid #ccc; /* Agregar un borde si es necesario */
+  color: black;
+}
+
+.add-food-button:hover {
+  background-color: #e0e0e0; /* Fondo sutil en hover */
+}
+
+.edit-button {
+  background-color: blue;
+  color: black;
+}
+
+.delete-button {
+  color: black;
+  background-color: red;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.page-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.page-button:hover {
+  background-color: #bbb;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+

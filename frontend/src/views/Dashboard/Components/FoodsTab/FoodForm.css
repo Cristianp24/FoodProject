@@ -17,3 +17,32 @@
     border-radius: 5px;
   }
   
+  button[type="submit"] {
+    padding: 10px 20px;
+    background-color: green; /* Color de fondo verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: darkgreen; /* Color más oscuro al hacer hover */
+  }
+  
+  /* Estilos para el botón de cancelar */
+  button[type="button"] {
+    padding: 10px 20px;
+    background-color: red; /* Color de fondo rojo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button[type="button"]:hover {
+    background-color: darkred; /* Color más oscuro al hacer hover */
+  }
+  

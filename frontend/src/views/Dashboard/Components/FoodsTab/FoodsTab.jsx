@@ -5,15 +5,20 @@ import './FoodsTab.css';
 
 const FoodsTab = () => {
   const [foods, setFoods] = useState([]);
-  const [showModal, setShowModal] = useState(false);  // Estado para mostrar/ocultar el modal
-  const [currentFood, setCurrentFood] = useState(null); // Almacena el alimento actual que se está editando
-  const navigate = useNavigate();  // Inicializar navigate
+  const [filteredFoods, setFilteredFoods] = useState([]); // Para almacenar los alimentos filtrados
+  const [showModal, setShowModal] = useState(false); 
+  const [currentFood, setCurrentFood] = useState(null); 
+  const [searchQuery, setSearchQuery] = useState(''); // Estado para la búsqueda
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const foodsPerPage = 12; // Número de alimentos por página
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFoods = async () => {
       try {
         const response = await axios.get('http://localhost:3000/foods');
         setFoods(response.data);
+        setFilteredFoods(response.data); // Inicializar con todos los alimentos
       } catch (error) {
         console.error('Error fetching foods:', error.message);
       }
@@ -21,12 +26,34 @@ const FoodsTab = () => {
     fetchFoods();
   }, []);
 
+  // Función para manejar la búsqueda
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    // Filtrar los alimentos por nombre
+    const filtered = foods.filter((food) =>
+      food.name.toLowerCase().includes(query)
+    );
+    setFilteredFoods(filtered);
+    setCurrentPage(1); // Resetear a la primera página cuando se haga una búsqueda
+  };
+
+  // Calcular los alimentos a mostrar según la página actual
+  const indexOfLastFood = currentPage * foodsPerPage;
+  const indexOfFirstFood = indexOfLastFood - foodsPerPage;
+  const currentFoods = filteredFoods.slice(indexOfFirstFood, indexOfLastFood);
+
+  // Función para cambiar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   // Función para eliminar un alimento
   const deleteFood = async (foodId) => {
     if (window.confirm('Are you sure you want to delete this food?')) {
       try {
         await axios.delete(`http://localhost:3000/foods/${foodId}`);
         setFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId));
+        setFilteredFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId)); // Filtrar también en los alimentos mostrados
       } catch (error) {
         console.error('Error deleting food:', error.message);
       }
@@ -34,14 +61,13 @@ const FoodsTab = () => {
   };
 
   const handleEditClick = (food) => {
-    // Establece el alimento que se está editando y muestra el modal
     setCurrentFood(food);
     setShowModal(true);
   };
 
   const handleModalClose = () => {
     setShowModal(false);
-    setCurrentFood(null);  // Limpiar el estado del alimento al cerrar el modal
+    setCurrentFood(null);
   };
 
   const handleEditSubmit = async (e) => {
@@ -49,16 +75,13 @@ const FoodsTab = () => {
     try {
       await axios.put(`http://localhost:3000/foods/${currentFood.id}`, currentFood);
       alert('Food updated successfully!');
-
-      // Actualizar el estado de los alimentos sin hacer una nueva petición HTTP
       setFoods((prevFoods) =>
         prevFoods.map((food) =>
           food.id === currentFood.id ? { ...food, ...currentFood } : food
         )
       );
-
       setShowModal(false);
-      setCurrentFood(null);  // Limpiar el estado después de editar
+      setCurrentFood(null);
     } catch (error) {
       console.error('Error updating food:', error.message);
     }
@@ -72,9 +95,25 @@ const FoodsTab = () => {
     }));
   };
 
+  // Calcular el número total de páginas
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredFoods.length / foodsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <div className="foods-tab">
       <h2>Manage Foods</h2>
+      
+      {/* Barra de búsqueda */}
+      <input
+        type="text"
+        placeholder="Search by name..."
+        value={searchQuery}
+        onChange={handleSearch}
+        className="search-bar"
+      />
+
       <button onClick={() => navigate('/create-food')} className="add-food-button">
         Add Food
       </button>
@@ -93,7 +132,7 @@ const FoodsTab = () => {
           </tr>
         </thead>
         <tbody>
-          {foods.map((food) => (
+          {currentFoods.map((food) => (
             <tr key={food.id}>
               <td>
                 <img src={food.imageUrl} alt={food.name} style={{ width: '50px', height: '50px' }} />
@@ -107,101 +146,30 @@ const FoodsTab = () => {
               <td>{food.quanty}</td>
               <td>{food.unit}</td>
               <td>
-                <button onClick={() => handleEditClick(food)}>Edit</button>
-                <button onClick={() => deleteFood(food.id)}>Delete</button>
+                <button onClick={() => handleEditClick(food)} className="edit-button">Edit</button>
+                <button onClick={() => deleteFood(food.id)} className="delete-button">Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      {/* Paginación */}
+      <div className="pagination">
+        {pageNumbers.map((number) => (
+          <button key={number} onClick={() => paginate(number)} className="page-button">
+            {number}
+          </button>
+        ))}
+      </div>
+
       {/* Modal para editar alimento */}
       {showModal && currentFood && (
         <div className="modal">
           <div className="modal-content">
-            <h3>Edit Food : {currentFood.name}</h3>
+            <h3>Edit Food: {currentFood.name}</h3>
             <form onSubmit={handleEditSubmit}>
-              <label>
-                Name:
-                <input
-                  type="text"
-                  name="name"
-                  value={currentFood.name}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Protein:
-                <input
-                  type="number"
-                  name="protein"
-                  value={currentFood.protein}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Carbohydrates:
-                <input
-                  type="number"
-                  name="carbohydrates"
-                  value={currentFood.carbohydrates}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Fat:
-                <input
-                  type="number"
-                  name="fat"
-                  value={currentFood.fat}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Fiber:
-                <input
-                  type="number"
-                  name="fiber"
-                  value={currentFood.fiber}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Calories:
-                <input
-                  type="number"
-                  name="calories"
-                  value={currentFood.calories}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Quantity:
-                <input
-                  type="number"
-                  name="quanty"
-                  value={currentFood.quanty}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Unit:
-                <input
-                  type="text"
-                  name="unit"
-                  value={currentFood.unit}
-                  onChange={handleChange}
-                />
-              </label>
-              <label>
-                Image URL:
-                <input
-                  type="text"
-                  name="imageUrl"
-                  value={currentFood.imageUrl}
-                  onChange={handleChange}
-                />
-              </label>
+              {/* Campos del formulario para editar el alimento */}
               <button type="submit">Save Changes</button>
               <button type="button" onClick={handleModalClose}>Cancel</button>
             </form>

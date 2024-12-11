@@ -8,8 +8,8 @@
 
 .food-card {
   width: calc(100% / 3 - 40px); /* 3 cartas por fila con espacio */
-  max-width: 250px; /* Ancho máximo */
-  height: 350px;
+  max-width: 200px; /* Ancho máximo */
+  height: 300px;
   perspective: 1000px;
   cursor: pointer;
   margin-bottom: 20px; /* Espacio en la parte inferior */
@@ -102,16 +102,16 @@
 .pagination button {
   padding: 5px 10px;
   border: 1px solid #ccc;
-  background-color: #fff;
+  background-color: #45a049;
   cursor: pointer;
 }
 
 .pagination button:disabled {
-  background-color: #f1f1f1;
+  background-color: #4CAF50;
   cursor: not-allowed;
 }
 
 .pagination button.active {
   background-color: #4caf50;
-  color: white;
+  color: black;
 }
